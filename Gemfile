@@ -12,7 +12,14 @@ end
 gem 'jquery-rails'
 
 group :development, :test do 
-  # gem 'pg'est
   gem 'sqlite3'
   gem 'rspec-rails'
+end
+
+group :test do
+  gem 'capybara'
+end
+
+group :production do
+  gem 'pg'
 end
