@@ -16,5 +16,11 @@ namespace :db do
       password: password,
       password_confirmation: password)
     end
+
+    users = User.find_by_email("godhuyang@gmail.com")
+    50.times do
+      content = Faker::Lorem.sentence(5)
+       users.microposts.create!(content: content)
+    end
   end
 end

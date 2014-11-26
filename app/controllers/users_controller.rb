@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-
+    @microposts = @user.microposts.paginate(page: params[:page])
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -89,12 +89,13 @@ class UsersController < ApplicationController
   
   private
 
-  def signed_in_user
-    unless signed_in?
-      store_location
-      redirect_to signin_path, notice: "Please sign in." unless signed_in?
-    end
-  end
+  # move to session_helper.rb, in order to code reuse
+  # def signed_in_user
+    # unless signed_in?
+      # store_location
+      # redirect_to signin_path, notice: "Please sign in." unless signed_in?
+    # end
+  # end
   
   def correct_user
     @user = User.find_by_id(params[:id])

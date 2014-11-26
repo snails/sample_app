@@ -4,9 +4,8 @@ SampleApp::Application.routes.draw do
   match '/about', to: "static_pages#about"
   match '/contact', to: "static_pages#contact"
 
-  resources :users do
-    resources :microposts
-  end
+  resources :users 
+  resources :microposts, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   
   match '/signup', to: "users#new"
