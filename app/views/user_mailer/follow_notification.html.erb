@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+      <h1>Hello, <%= @user.name %></h1>
+      <p>
+           You have been followed by <% @followed_user.name %> sucessfully.
+    </p>
+    <p>
+        Here is his/her  homepage, you can go around. <a href="<%= user_url(@followed_user) %>">Click Here </a>
+    </p>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>
