@@ -7,4 +7,11 @@ class UserMailer < ActionMailer::Base
     @followed_user = followed_user
     mail( to: "#{current_user.name} <#{current_user.email}>", subject: "Followed Notification" )
   end
+
+
+  def password_reset(user)
+    @user = user
+    mail( to: user.email, subject: "Reset Password" )
+  end
 end
+

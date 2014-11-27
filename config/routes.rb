@@ -17,4 +17,9 @@ SampleApp::Application.routes.draw do
   match '/signin', to: "sessions#new"
   match '/signout', to: "sessions#destroy", via: :delete
 
+  match '/passwordinfo', to: "users#passwordinfo", via: :get
+  match '/password_forget', to:"users#password_forget", via: :post
+  match '/edit_password', to:"users#edit_password", via: :get
+  match '/reset_password', to: "users#reset_password", via: :put
+
 end

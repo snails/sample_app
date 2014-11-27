@@ -13,7 +13,8 @@
 
 class User < ActiveRecord::Base
   has_secure_password
-  attr_accessible :email, :name, :password, :password_confirmation
+  attr_accessible :email, :name, :password, :password_confirmation,
+                  :password_reset_token, :password_reset_sent_at
 
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
@@ -54,9 +55,23 @@ class User < ActiveRecord::Base
     Micropost.from_users_followed_by(self)
   end
 
+  def send_password_reset
+    generate_secure_token(:password_reset_token)
+    self.password_reset_sent_at = Time.zone.now
+    self.password = self.password_confirmation = ('a'..'z').to_a.shuffle.join
+    save!
+    UserMailer.password_reset(self).deliver
+  end
+
   private
+  def generate_secure_token(column)
+    if User.exists?(column => self[column])
+    self[column] = SecureRandom.urlsafe_base64
+    end
+  end
+
   def create_remember_token
-    self.remember_token = SecureRandom.urlsafe_base64
+    generate_secure_token(:remember_token)
   end
 
 end

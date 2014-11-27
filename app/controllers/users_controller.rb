@@ -102,6 +102,40 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def passwordinfo #nothing to do
+  end
+
+  def password_forget
+    user = User.find_by_password_reset_token(params[:token])
+    if user
+      # user.send_password_reset 
+      redirect_to root_url, :notice => "Email sent with password reset instructions."
+    else
+      redirect_to passwordinfo_path, flash[:error]="User account is not valid"
+    end
+  end
+
+  def edit_password
+    @user = User.find_by_password_reset_token(params[:token])
+    @token = params[:token]
+    puts "EEEEEEEthe user name is:#{@user.email}"
+    if @user.password_reset_sent_at < 2.hours.ago
+      redirect_to passwordinfo_path, flash[:alert] = "Password reset has expired"
+    end
+  end
+
+  def reset_password
+    @user = User.find_by_password_reset_token!(params[:password_reset_token])
+    #check the time again
+    if @user.password_reset_sent_at < 2.hours.ago
+      redirect_to passwordinfo_path, flash[:alert] = "Password reset has expired"
+    elsif @user.update_attributes(params[:user])
+      redirect_to signin_url, :notice => "Password has been reset!"
+    else
+      render password_edit
+    end
+  end
+
   private
 
   # move to session_helper.rb, in order to code reuse
