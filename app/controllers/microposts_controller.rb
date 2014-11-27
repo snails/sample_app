@@ -5,8 +5,11 @@ class MicropostsController < ApplicationController
   def create 
     @micropost = current_user.microposts.create(params[:micropost])
     if @micropost.save
-       flash[:sucess] = "Micropost created!"
-       redirect_to root_url
+      flash.now[:sucess] = "Micropost created!"
+      respond_to do |format|
+        format.html { redirect_to root_url }
+        format.js
+      end
     else
       @feed_items = []
       render 'static_pages/home'
@@ -16,8 +19,10 @@ class MicropostsController < ApplicationController
   # DELETE /microposts/1.json
   def destroy
     @micropost.destroy
-    redirect_to root_url
-
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.js
+    end
   end
 
 
